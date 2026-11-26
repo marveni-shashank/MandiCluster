@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MandiCluster{% endblock %} | Agricultural Market & Price-Pattern Segmentation</title>
+  
+  <!-- Favicon icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="brand-link">
+        <div class="brand-logo">🌾</div>
+        <div class="brand-text">
+          <span class="brand-title">MandiCluster</span>
+          <span class="brand-subtitle">Agri-Market ML Analytics</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">
+              <span>🏠</span> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('analytics') }}" class="{% if request.endpoint == 'analytics' %}active{% endif %}">
+              <span>📊</span> Market Analytics
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('segmentation') }}" class="{% if request.endpoint == 'segmentation' %}active{% endif %}">
+              <span>🎯</span> Price Segmentation
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('performance') }}" class="{% if request.endpoint == 'performance' %}active{% endif %}">
+              <span>📈</span> Model Performance
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('explorer') }}" class="{% if request.endpoint == 'explorer' %}active{% endif %}">
+              <span>📁</span> Dataset Explorer
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">
+              <span>📖</span> About Project
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- FLASH MESSAGES -->
+  <div class="main-wrapper" style="padding-bottom: 0;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;cursor:pointer;font-weight:bold;font-size:1.1rem;color:inherit;">×</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- MAIN BODY CONTENT -->
+  <main class="main-wrapper">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand" style="font-size: 1.15rem; margin-bottom: 0.35rem;">
+            🌾 MandiCluster &bull; Market & Price-Pattern Segmentation
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 520px;">
+            An Unsupervised Machine Learning platform for discovering price dynamics, volatility profiles, and trading archetypes across agricultural mandis.
+          </p>
+        </div>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('analytics') }}">Analytics</a></li>
+          <li><a href="{{ url_for('segmentation') }}">Segmentation</a></li>
+          <li><a href="{{ url_for('performance') }}">Performance</a></li>
+          <li><a href="{{ url_for('explorer') }}">Dataset</a></li>
+          <li><a href="{{ url_for('about') }}">About Project</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          <span>Domain: <strong>Agricultural Data Analytics & Unsupervised ML</strong> | Tech: <strong>Python Flask, Scikit-learn, Pandas</strong></span>
+        </div>
+        <div>
+          <span>Dataset: <strong>Agmarknet (Ministry of Agriculture, GoI)</strong></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

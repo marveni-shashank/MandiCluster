@@ -1,0 +1,335 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dataset Explorer - Agmarknet Records & CSV Upload{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border:none; padding-bottom: 0; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 0.5rem;">
+      <span>📁</span> Dataset Explorer & Data Management
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+      Inspect raw agricultural market records, examine data quality, upload custom Agmarknet CSVs, and review summary statistics.
+    </p>
+  </div>
+</div>
+
+<!-- CURRENT DATASET STATUS & ACTIONS -->
+<div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-left: 4px solid var(--primary-main);">
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <div style="font-size: 2rem;">📄</div>
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-title);">Active Dataset:</h3>
+        <span class="badge {% if is_custom %}badge-purple{% else %}badge-green{% endif %}" style="font-size: 0.85rem;">
+          {{ current_filename }}
+        </span>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">
+        {% if is_custom %}
+          User-uploaded custom dataset currently active in application memory.
+        {% else %}
+          Standard official Agmarknet agricultural commodity price dataset.
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  {% if is_custom %}
+    <form action="{{ url_for('api_reset_dataset') }}" method="POST">
+      <button type="submit" class="btn btn-outline btn-sm">
+        <span>🔄</span> Reset to Default Agmarknet
+      </button>
+    </form>
+  {% endif %}
+</div>
+
+<!-- DATASET STATS GRID -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon green">📊</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.total_records }}</span>
+      <span class="stat-label">Total Records</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">📋</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.total_columns }}</span>
+      <span class="stat-label">Attributes / Columns</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon amber">🌾</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.unique_commodities }}</span>
+      <span class="stat-label">Unique Commodities</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon purple">🏛️</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.unique_markets }}</span>
+      <span class="stat-label">Unique Mandis</span>
+    </div>
+  </div>
+</div>
+
+<!-- CSV UPLOAD SECTION -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📤</span> Upload Agmarknet CSV Dataset</h3>
+      <p class="card-subtitle">Upload any Agmarknet agricultural price report (CSV format, max 16 MB)</p>
+    </div>
+    <span class="badge badge-blue">Schema Validated</span>
+  </div>
+
+  <form action="{{ url_for('api_upload_dataset') }}" method="POST" enctype="multipart/form-data">
+    <div style="border: 2px dashed var(--border-subtle); border-radius: var(--radius-lg); padding: 2rem; text-align: center; background: #f8fafc; transition: var(--transition);" id="dropZone">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>
+      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem;">
+        Drag & Drop your CSV file here, or browse
+      </h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 500px; margin: 0 auto 1.25rem auto;">
+        Supported Agmarknet columns: <code>State</code>, <code>District</code>, <code>Market</code>, <code>Commodity</code>, <code>Variety</code>, <code>Min_Price</code>, <code>Max_Price</code>, <code>Modal_Price</code>.
+      </p>
+
+      <input type="file" name="file" id="csvFileInput" accept=".csv" required style="display: none;">
+      
+      <div style="display: flex; justify-content: center; gap: 1rem; align-items: center;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('csvFileInput').click()">
+          <span>📂</span> Select CSV File
+        </button>
+        <span id="selectedFileName" style="font-size: 0.85rem; color: var(--text-body); font-weight: 600;"></span>
+        <button type="submit" id="btnUploadSubmit" class="btn btn-green" style="display: none;">
+          <span>⬆️</span> Upload & Ingest
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- NUMERICAL SUMMARY STATISTICS -->
+{% if summary.price_summary %}
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📐</span> Numerical Feature Distribution & Summary Statistics</h3>
+      <p class="card-subtitle">Descriptive parametric measures for agricultural price metrics</p>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Metric / Statistic</th>
+          <th>Min Price (₹/Q)</th>
+          <th>Modal Price (₹/Q)</th>
+          <th>Max Price (₹/Q)</th>
+          <th>Price Spread (₹)</th>
+          <th>Spread Ratio %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Count</strong></td>
+          <td>{{ summary.price_summary.Min_Price.count if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Modal_Price.count if 'Modal_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Max_Price.count if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread.count if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct.count if 'Price_Spread_Pct' in summary.price_summary else '--' }}</td>
+        </tr>
+        <tr>
+          <td><strong>Mean (Average)</strong></td>
+          <td>₹{{ summary.price_summary.Min_Price.mean if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td><strong style="color: var(--primary-dark);">₹{{ summary.price_summary.Modal_Price.mean if 'Modal_Price' in summary.price_summary else '--' }}</strong></td>
+          <td>₹{{ summary.price_summary.Max_Price.mean if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Price_Spread.mean if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct.mean if 'Price_Spread_Pct' in summary.price_summary else '--' }}%</td>
+        </tr>
+        <tr>
+          <td><strong>Standard Deviation (Std)</strong></td>
+          <td>{{ summary.price_summary.Min_Price.std if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Modal_Price.std if 'Modal_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Max_Price.std if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread.std if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct.std if 'Price_Spread_Pct' in summary.price_summary else '--' }}%</td>
+        </tr>
+        <tr>
+          <td><strong>Minimum</strong></td>
+          <td>₹{{ summary.price_summary.Min_Price.min if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Modal_Price.min if 'Modal_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Max_Price.min if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Price_Spread.min if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct.min if 'Price_Spread_Pct' in summary.price_summary else '--' }}%</td>
+        </tr>
+        <tr>
+          <td><strong>Median (50%)</strong></td>
+          <td>₹{{ summary.price_summary.Min_Price['50%'] if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Modal_Price['50%'] if 'Modal_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Max_Price['50%'] if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Price_Spread['50%'] if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct['50%'] if 'Price_Spread_Pct' in summary.price_summary else '--' }}%</td>
+        </tr>
+        <tr>
+          <td><strong>Maximum</strong></td>
+          <td>₹{{ summary.price_summary.Min_Price.max if 'Min_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Modal_Price.max if 'Modal_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Max_Price.max if 'Max_Price' in summary.price_summary else '--' }}</td>
+          <td>₹{{ summary.price_summary.Price_Spread.max if 'Price_Spread' in summary.price_summary else '--' }}</td>
+          <td>{{ summary.price_summary.Price_Spread_Pct.max if 'Price_Spread_Pct' in summary.price_summary else '--' }}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- PAGINATED RAW DATASET RECORDS TABLE -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📋</span> Raw Dataset Records</h3>
+      <p class="card-subtitle">Live inspection table with server-side pagination and real-time search</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <input type="text" id="tableSearchInput" class="form-control" placeholder="Search records..." style="width: 220px;">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>State</th>
+          <th>District</th>
+          <th>Market</th>
+          <th>Commodity</th>
+          <th>Variety</th>
+          <th>Date</th>
+          <th>Min Price (₹)</th>
+          <th>Modal Price (₹)</th>
+          <th>Max Price (₹)</th>
+          <th>Price Spread (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="rawDataTableBody">
+        <tr>
+          <td colspan="11" style="text-align: center; padding: 2rem;">Loading table...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION CONTROLS -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="font-size: 0.85rem; color: var(--text-muted);" id="paginationInfo">
+      Showing records 0 - 0 of 0
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+      <button id="btnPrevPage" class="btn btn-outline btn-sm">Previous</button>
+      <span id="pageIndicator" style="display: flex; align-items: center; font-size: 0.85rem; font-weight: 600; padding: 0 0.5rem;">
+        Page 1 of 1
+      </span>
+      <button id="btnNextPage" class="btn btn-outline btn-sm">Next</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentPage = 1;
+const pageSize = 15;
+let currentSearch = '';
+
+const fileInput = document.getElementById('csvFileInput');
+const fileNameDisplay = document.getElementById('selectedFileName');
+const uploadBtn = document.getElementById('btnUploadSubmit');
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files.length > 0) {
+    fileNameDisplay.textContent = `Selected: ${e.target.files[0].name}`;
+    uploadBtn.style.display = 'inline-flex';
+  } else {
+    fileNameDisplay.textContent = '';
+    uploadBtn.style.display = 'none';
+  }
+});
+
+async function loadTableData(page = 1, search = '') {
+  currentPage = page;
+  currentSearch = search;
+
+  const url = new URL('/api/records-table', window.location.origin);
+  url.searchParams.append('page', page);
+  url.searchParams.append('page_size', pageSize);
+  if (search) url.searchParams.append('search', search);
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    renderTableRows(data.rows, page, pageSize);
+    renderPagination(data);
+  } catch (err) {
+    console.error("Failed to load table rows:", err);
+  }
+}
+
+function renderTableRows(rows, page, size) {
+  const tbody = document.getElementById('rawDataTableBody');
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:2rem;">No matching records found.</td></tr>`;
+    return;
+  }
+
+  const startIdx = (page - 1) * size;
+  tbody.innerHTML = rows.map((r, i) => `
+    <tr>
+      <td>${startIdx + i + 1}</td>
+      <td><strong>${r.State}</strong></td>
+      <td>${r.District}</td>
+      <td><span class="badge badge-green">${r.Market}</span></td>
+      <td><strong>${r.Commodity}</strong></td>
+      <td><span style="color: var(--text-muted);">${r.Variety}</span></td>
+      <td><small>${r.Arrival_Date}</small></td>
+      <td>₹${Number(r.Min_Price).toLocaleString()}</td>
+      <td style="font-weight: 700; color: var(--primary-dark);">₹${Number(r.Modal_Price).toLocaleString()}</td>
+      <td>₹${Number(r.Max_Price).toLocaleString()}</td>
+      <td>₹${Number(r.Price_Spread).toLocaleString()}</td>
+    </tr>
+  `).join('');
+}
+
+function renderPagination(data) {
+  const start = (data.page - 1) * data.page_size + 1;
+  const end = Math.min(data.page * data.page_size, data.total);
+  document.getElementById('paginationInfo').textContent = `Showing records ${data.total > 0 ? start : 0} - ${end} of ${data.total}`;
+  document.getElementById('pageIndicator').textContent = `Page ${data.page} of ${data.total_pages}`;
+
+  document.getElementById('btnPrevPage').disabled = data.page <= 1;
+  document.getElementById('btnNextPage').disabled = data.page >= data.total_pages;
+}
+
+document.getElementById('btnPrevPage').addEventListener('click', () => {
+  if (currentPage > 1) loadTableData(currentPage - 1, currentSearch);
+});
+
+document.getElementById('btnNextPage').addEventListener('click', () => {
+  loadTableData(currentPage + 1, currentSearch);
+});
+
+document.getElementById('tableSearchInput').addEventListener('input', (e) => {
+  loadTableData(1, e.target.value.trim());
+});
+
+window.addEventListener('DOMContentLoaded', () => loadTableData(1));
+</script>
+{% endblock %}

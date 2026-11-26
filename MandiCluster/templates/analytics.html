@@ -1,0 +1,370 @@
+{% extends 'layout.html' %}
+
+{% block title %}Market Analytics - Mandi Price Analysis{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border:none; padding-bottom: 0; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 0.5rem;">
+      <span>📊</span> Agricultural Market Analytics
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+      Real-time price intelligence, inter-mandi price spread comparisons, and commodity distributions.
+    </p>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="form-group">
+    <label class="form-label" for="commodityFilter">Filter by Commodity</label>
+    <select id="commodityFilter" class="form-select">
+      <option value="ALL">All Commodities</option>
+      {% for c in commodities %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="stateFilter">Filter by State</label>
+    <select id="stateFilter" class="form-select">
+      <option value="ALL">All States</option>
+      {% for s in states %}
+        <option value="{{ s }}">{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="marketFilter">Filter by Mandi / Market</label>
+    <select id="marketFilter" class="form-select">
+      <option value="ALL">All Mandis</option>
+      {% for m in markets %}
+        <option value="{{ m }}">{{ m }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label" for="searchInput">Search Query</label>
+    <input type="text" id="searchInput" class="form-control" placeholder="Search commodity, market, state...">
+  </div>
+
+  <div style="display: flex; gap: 0.5rem;">
+    <button id="btnFilter" class="btn btn-green" style="height: 40px; padding: 0 1.25rem;">
+      <span>🔍</span> Apply
+    </button>
+    <button id="btnResetFilters" class="btn btn-outline" style="height: 40px;">
+      Reset
+    </button>
+  </div>
+</div>
+
+<!-- DYNAMIC KPI STATS -->
+<div class="stats-grid" id="kpiStatsContainer">
+  <div class="stat-card">
+    <div class="stat-icon green">📦</div>
+    <div class="stat-details">
+      <span class="stat-value" id="statCount">--</span>
+      <span class="stat-label">Active Records</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon amber">₹</div>
+    <div class="stat-details">
+      <span class="stat-value" id="statAvgModal">--</span>
+      <span class="stat-label">Average Modal Price (₹/Q)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">⚖️</div>
+    <div class="stat-details">
+      <span class="stat-value" id="statPriceRange">--</span>
+      <span class="stat-label">Min - Max Price Range (₹/Q)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon purple">📊</div>
+    <div class="stat-details">
+      <span class="stat-value" id="statAvgSpread">--</span>
+      <span class="stat-label">Avg Intra-Mandi Spread</span>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS SECTION -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>📈</span> Min vs Modal vs Max Price Comparison</h3>
+        <p class="card-subtitle" id="chart1Subtitle">Price distribution per 100 kg (Quintal)</p>
+      </div>
+    </div>
+    <div style="position: relative; height: 340px;">
+      <canvas id="priceComparisonChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>📉</span> Intra-Market Price Spread & Volatility</h3>
+        <p class="card-subtitle">Difference between ceiling and floor prices (₹/Quintal)</p>
+      </div>
+    </div>
+    <div style="position: relative; height: 340px;">
+      <canvas id="spreadChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- DETAILED RECORDS TABLE -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📋</span> Mandi Price Records</h3>
+      <p class="card-subtitle">Verified market arrivals and trading prices from active dataset</p>
+    </div>
+    <span class="badge badge-green" id="tableRecordCount">Showing 0 records</span>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>District</th>
+          <th>Market (Mandi)</th>
+          <th>Commodity</th>
+          <th>Variety</th>
+          <th>Min Price (₹/Q)</th>
+          <th>Modal Price (₹/Q)</th>
+          <th>Max Price (₹/Q)</th>
+          <th>Price Spread (₹)</th>
+          <th>Spread %</th>
+        </tr>
+      </thead>
+      <tbody id="analyticsTableBody">
+        <tr>
+          <td colspan="10" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+            Loading market records...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let priceChart = null;
+let spreadChart = null;
+
+async function fetchMarketAnalytics() {
+  const commodity = document.getElementById('commodityFilter').value;
+  const state = document.getElementById('stateFilter').value;
+  const market = document.getElementById('marketFilter').value;
+  const search = document.getElementById('searchInput').value.trim();
+
+  const url = new URL('/api/market-data', window.location.origin);
+  if (commodity) url.searchParams.append('commodity', commodity);
+  if (state) url.searchParams.append('state', state);
+  if (market) url.searchParams.append('market', market);
+  if (search) url.searchParams.append('search', search);
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    renderKPIs(data.stats);
+    renderCharts(data.group_comparison, data.group_by);
+    renderTable(data.records);
+    document.getElementById('tableRecordCount').textContent = `Showing ${data.records.length} of ${data.total_filtered} records`;
+  } catch (err) {
+    console.error("Failed to load market analytics:", err);
+  }
+}
+
+function renderKPIs(stats) {
+  if (!stats || !stats.count) {
+    document.getElementById('statCount').textContent = '0';
+    document.getElementById('statAvgModal').textContent = '₹0';
+    document.getElementById('statPriceRange').textContent = '₹0 - ₹0';
+    document.getElementById('statAvgSpread').textContent = '₹0 (0%)';
+    return;
+  }
+  document.getElementById('statCount').textContent = stats.count.toLocaleString();
+  document.getElementById('statAvgModal').textContent = `₹${Math.round(stats.avg_modal_price).toLocaleString()}`;
+  document.getElementById('statPriceRange').textContent = `₹${Math.round(stats.min_price).toLocaleString()} - ₹${Math.round(stats.max_price).toLocaleString()}`;
+  document.getElementById('statAvgSpread').textContent = `₹${Math.round(stats.avg_spread).toLocaleString()} (${stats.avg_spread_pct}%)`;
+}
+
+function renderCharts(groupedData, groupBy) {
+  if (!groupedData || groupedData.length === 0) return;
+
+  const labels = groupedData.map(d => d[groupBy]);
+  const minPrices = groupedData.map(d => d.Min_Price);
+  const modalPrices = groupedData.map(d => d.Modal_Price);
+  const maxPrices = groupedData.map(d => d.Max_Price);
+  const spreads = groupedData.map(d => d.Price_Spread);
+
+  document.getElementById('chart1Subtitle').textContent = `Comparison grouped by ${groupBy}`;
+
+  // Chart 1: Price Comparison
+  const ctx1 = document.getElementById('priceComparisonChart').getContext('2d');
+  if (priceChart) priceChart.destroy();
+  priceChart = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Min Price (₹/Q)',
+          data: minPrices,
+          backgroundColor: 'rgba(2, 132, 199, 0.75)',
+          borderRadius: 4
+        },
+        {
+          label: 'Modal Price (₹/Q)',
+          data: modalPrices,
+          backgroundColor: 'rgba(25, 135, 84, 0.9)',
+          borderRadius: 4
+        },
+        {
+          label: 'Max Price (₹/Q)',
+          data: maxPrices,
+          backgroundColor: 'rgba(217, 119, 6, 0.85)',
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `${ctx.dataset.label}: ₹${Math.round(ctx.raw).toLocaleString()}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (val) => '₹' + val.toLocaleString()
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 20
+          }
+        }
+      }
+    }
+  });
+
+  // Chart 2: Intra-Market Spread
+  const ctx2 = document.getElementById('spreadChart').getContext('2d');
+  if (spreadChart) spreadChart.destroy();
+  spreadChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Price Spread (Max - Min in ₹)',
+          data: spreads,
+          backgroundColor: 'rgba(126, 34, 206, 0.8)',
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Spread: ₹${Math.round(ctx.raw).toLocaleString()}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (val) => '₹' + val.toLocaleString()
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 20
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderTable(records) {
+  const tbody = document.getElementById('analyticsTableBody');
+  if (!records || records.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="10" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          No matching agricultural records found. Try modifying your filter criteria.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = records.map(r => `
+    <tr>
+      <td><strong>${r.State}</strong></td>
+      <td>${r.District}</td>
+      <td><span class="badge badge-green">${r.Market}</span></td>
+      <td><strong>${r.Commodity}</strong></td>
+      <td><span style="color: var(--text-muted);">${r.Variety}</span></td>
+      <td>₹${Number(r.Min_Price).toLocaleString()}</td>
+      <td style="font-weight: 700; color: var(--primary-dark);">₹${Number(r.Modal_Price).toLocaleString()}</td>
+      <td>₹${Number(r.Max_Price).toLocaleString()}</td>
+      <td>₹${Number(r.Price_Spread).toLocaleString()}</td>
+      <td><span class="badge ${r.Price_Spread_Pct > 25 ? 'badge-amber' : 'badge-blue'}">${r.Price_Spread_Pct}%</span></td>
+    </tr>
+  `).join('');
+}
+
+// Event Listeners
+document.getElementById('btnFilter').addEventListener('click', fetchMarketAnalytics);
+document.getElementById('searchInput').addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') fetchMarketAnalytics();
+});
+document.getElementById('commodityFilter').addEventListener('change', fetchMarketAnalytics);
+document.getElementById('stateFilter').addEventListener('change', fetchMarketAnalytics);
+document.getElementById('marketFilter').addEventListener('change', fetchMarketAnalytics);
+
+document.getElementById('btnResetFilters').addEventListener('click', () => {
+  document.getElementById('commodityFilter').value = 'ALL';
+  document.getElementById('stateFilter').value = 'ALL';
+  document.getElementById('marketFilter').value = 'ALL';
+  document.getElementById('searchInput').value = '';
+  fetchMarketAnalytics();
+});
+
+// Initial load
+window.addEventListener('DOMContentLoaded', fetchMarketAnalytics);
+</script>
+{% endblock %}

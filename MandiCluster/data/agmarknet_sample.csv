@@ -1,0 +1,175 @@
+State,District,Market,Commodity,Variety,Arrival_Date,Min_Price,Max_Price,Modal_Price
+Maharashtra,Nashik,Lasalgaon,Onion,Red,15/03/2024,1150,1850,1550
+Maharashtra,Nashik,Pimpalgaon,Onion,Red,15/03/2024,1200,1920,1600
+Maharashtra,Pune,Pune APMC,Tomato,Hybrid,15/03/2024,1400,2200,1800
+Maharashtra,Pune,Khed,Potato,Local,15/03/2024,1250,1650,1450
+Maharashtra,Ahmednagar,Rahata,Soybean,Yellow,15/03/2024,4200,4750,4550
+Maharashtra,Nagpur,Nagpur APMC,Cotton,Medium Staple,15/03/2024,6800,7400,7150
+Maharashtra,Solapur,Solapur,Pomegranate,Bhagwa,15/03/2024,5500,11000,8500
+Maharashtra,Kolhapur,Kolhapur APMC,Jaggery,Gur Local,15/03/2024,3600,4300,3950
+Maharashtra,Jalgaon,Jalgaon APMC,Banana,Cavendish,15/03/2024,1500,2400,1950
+Maharashtra,Amravati,Amravati,Gram (Chana),Desi,15/03/2024,5300,5900,5650
+Punjab,Ludhiana,Khanna,Wheat,HD-2967,16/03/2024,2275,2350,2300
+Punjab,Jalandhar,Jalandhar City,Potato,Kufri Jyoti,16/03/2024,950,1400,1200
+Punjab,Amritsar,Amritsar Grain,Rice,Basmati 1121,16/03/2024,3800,4600,4250
+Punjab,Bathinda,Bathinda,Mustard,Raya,16/03/2024,4900,5450,5200
+Punjab,Patiala,Rajpura,Maize,Hybrid,16/03/2024,1850,2150,2020
+Punjab,Kapurthala,Phagwara,Green Pea,Local,16/03/2024,2200,3100,2650
+Uttar Pradesh,Agra,Agra APMC,Potato,Desi,16/03/2024,1050,1450,1280
+Uttar Pradesh,Aligarh,Aligarh,Wheat,Dara,16/03/2024,2250,2340,2290
+Uttar Pradesh,Varanasi,Varanasi,Tomato,Desi,16/03/2024,1600,2400,2050
+Uttar Pradesh,Barabanki,Barabanki,Mustard,Black,16/03/2024,5100,5650,5380
+Uttar Pradesh,Bareilly,Bareilly,Rice,Sona Masuri,16/03/2024,2700,3200,2950
+Uttar Pradesh,Kanpur,Kanpur Mandi,Gram (Chana),Kabuli,16/03/2024,6200,7100,6650
+Uttar Pradesh,Muzaffarnagar,Muzaffarnagar,Gur,Chaku,16/03/2024,3400,3900,3680
+Uttar Pradesh,Moradabad,Moradabad,Ginger,Green,16/03/2024,4800,6200,5500
+Uttar Pradesh,Mathura,Mathura,Barley,Local,16/03/2024,1750,2050,1920
+Gujarat,Rajkot,Rajkot APMC,Cotton,Shankar-6,17/03/2024,7100,7750,7450
+Gujarat,Rajkot,Gondal,Groundnut,Spreading,17/03/2024,5800,6700,6300
+Gujarat,Ahmedabad,Ahmedabad APMC,Cumin (Jeera),Unjha Quality,17/03/2024,24000,29500,26800
+Gujarat,Mehsana,Unjha,Cumin (Jeera),Machine Clean,17/03/2024,25500,31000,28200
+Gujarat,Surat,Surat APMC,Banana,Robusta,17/03/2024,1400,2100,1750
+Gujarat,Bhavnagar,Mahuva,Onion,White,17/03/2024,1250,1950,1620
+Gujarat,Junagadh,Junagadh,Coriander,Desi,17/03/2024,6500,7800,7150
+Gujarat,Patan,Patan,Castor Seed,Divela,17/03/2024,5600,6100,5880
+Madhya Pradesh,Indore,Indore APMC,Soybean,Yellow,17/03/2024,4350,4800,4600
+Madhya Pradesh,Indore,Sanwer,Wheat,Sharbati,17/03/2024,2800,3400,3150
+Madhya Pradesh,Ujjain,Ujjain APMC,Gram (Chana),Kantawala,17/03/2024,5400,6000,5720
+Madhya Pradesh,Mandsaur,Mandsaur,Garlic,Ooti,17/03/2024,8500,16500,12800
+Madhya Pradesh,Neemuch,Neemuch,Fenugreek (Methi),Bold,17/03/2024,5100,6200,5700
+Madhya Pradesh,Hoshangabad,Itarsi,Wheat,Mill Quality,17/03/2024,2280,2410,2350
+Madhya Pradesh,Chhindwara,Chhindwara,Maize,Yellow,17/03/2024,1900,2220,2080
+Madhya Pradesh,Gwalior,Gwalior,Mustard,Mustard Seed,17/03/2024,5050,5550,5320
+Karnataka,Bengaluru,APMC Yeshwanthpur,Onion,Bellary,18/03/2024,1350,2100,1750
+Karnataka,Bengaluru,K.R. Market,Tomato,Local,18/03/2024,1300,1950,1650
+Karnataka,Kolar,Kolar APMC,Tomato,Hybrid,18/03/2024,1200,1850,1550
+Karnataka,Belagavi,Belagavi,Sugarcane,Local,18/03/2024,310,360,335
+Karnataka,Davangere,Davangere,Maize,Hybrid,18/03/2024,1950,2250,2100
+Karnataka,Mysuru,Bandipalya,Ragi,Local,18/03/2024,3300,3800,3550
+Karnataka,Ballari,Kottur,Cotton,Bunny,18/03/2024,6900,7500,7250
+Karnataka,Hubballi,Amargol,Bengal Gram,Desi,18/03/2024,5400,5950,5700
+Karnataka,Shimoga,Shimoga,Arecanut,Bette,18/03/2024,42000,51000,47500
+Andhra Pradesh,Guntur,Guntur Mirchi Yard,Chilli Red,Teja,18/03/2024,18500,24500,21800
+Andhra Pradesh,Kurnool,Kurnool,Onion,Medium,18/03/2024,1100,1700,1400
+Andhra Pradesh,Anantapur,Anantapur,Groundnut,Pods,18/03/2024,6100,7200,6700
+Andhra Pradesh,Krishna,Vijayawada,Rice,BPT 5204,18/03/2024,3600,4300,3950
+Andhra Pradesh,East Godavari,Rajahmundry,Paddy,Common,18/03/2024,2183,2220,2203
+Andhra Pradesh,Chittoor,Madanapalle,Tomato,Naveen,18/03/2024,1250,2000,1650
+Rajasthan,Jaipur,Jaipur Muhana,Mustard,Mustard Seed,19/03/2024,5150,5600,5380
+Rajasthan,Kota,Kota Mandi,Soybean,Yellow,19/03/2024,4300,4780,4580
+Rajasthan,Sri Ganganagar,Sri Ganganagar,Wheat,Dara,19/03/2024,2300,2420,2360
+Rajasthan,Bikaner,Bikaner,Guar Seed,Guar Local,19/03/2024,4900,5400,5180
+Rajasthan,Jodhpur,Jodhpur Mandi,Cumin (Jeera),Ordinary,19/03/2024,23500,28500,26000
+Rajasthan,Alwar,Alwar,Onion,Nasik Red,19/03/2024,1300,1900,1620
+Rajasthan,Nagaur,Nagaur,Fenugreek (Methi),Local,19/03/2024,5300,6400,5850
+Rajasthan,Barmer,Barmer,Isabgol,Psyllium Seed,19/03/2024,14500,18500,16800
+Haryana,Karnal,Karnal APMC,Rice,Basmati Pusa,19/03/2024,3700,4500,4180
+Haryana,Sirsa,Sirsa Mandi,Cotton,American,19/03/2024,6750,7350,7100
+Haryana,Kurukshetra,Thanesar,Wheat,PBW 502,19/03/2024,2275,2360,2310
+Haryana,Hisar,Hisar Mandi,Mustard,Bold,19/03/2024,5000,5500,5280
+Haryana,Ambala,Ambala City,Potato,Jyoti,19/03/2024,1100,1500,1320
+Haryana,Rohtak,Rohtak,Bajra,Desi,19/03/2024,2150,2400,2280
+Tamil Nadu,Coimbatore,Coimbatore Market,Coconut,Medium,20/03/2024,2400,3200,2850
+Tamil Nadu,Madurai,Madurai APMC,Banana,Poovan,20/03/2024,1800,2600,2250
+Tamil Nadu,Tiruchirappalli,Trichy Central,Rice,Ponni,20/03/2024,3900,4700,4350
+Tamil Nadu,Erode,Erode Mandi,Turmeric,Finger,20/03/2024,12500,16800,14600
+Tamil Nadu,Salem,Salem APMC,Tapioca,Raw,20/03/2024,1200,1650,1450
+Tamil Nadu,Dindigul,Ottanchatram,Drumstick,Moringa,20/03/2024,3000,5500,4200
+Tamil Nadu,Thanjavur,Thanjavur,Paddy,ADT 45,20/03/2024,2183,2250,2215
+Tamil Nadu,Theni,Theni,Cardamom,Small,20/03/2024,145000,180000,165000
+Telangana,Warangal,Warangal Enamamula,Cotton,Bunny,20/03/2024,7050,7650,7380
+Telangana,Warangal,Warangal Enamamula,Chilli Red,Wonder Hot,20/03/2024,17500,23000,20500
+Telangana,Nizamabad,Nizamabad APMC,Turmeric,Rajapore,20/03/2024,11800,15900,13900
+Telangana,Khammam,Khammam,Maize,Hybrid,20/03/2024,1920,2200,2060
+Telangana,Karimnagar,Karimnagar,Paddy,Fine,20/03/2024,2203,2350,2280
+Telangana,Mahbubnagar,Badepally,Castor Seed,Local,20/03/2024,5500,6000,5780
+Kerala,Kozhikode,Calicut Market,Black Pepper,Garbled,21/03/2024,52000,58000,55500
+Kerala,Kottayam,Kottayam,Rubber,RSS-4,21/03/2024,16500,18500,17800
+Kerala,Palakkad,Palakkad Mandi,Paddy,Matta,21/03/2024,2750,3100,2920
+Kerala,Wayanad,Kalpetta,Coffee,Robusta Cherry,21/03/2024,18500,22000,20200
+Kerala,Idukki,Nedumkandam,Cardamom,Medium Bold,21/03/2024,152000,190000,172000
+Kerala,Ernakulam,Cochin,Ginger,Dry Cochin,21/03/2024,22000,28000,25500
+West Bengal,Burdwan,Burdwan Mandi,Rice,Gobindobhog,21/03/2024,5500,6800,6200
+West Bengal,Hooghly,Sheoraphuly,Potato,Jyoti,21/03/2024,1150,1520,1350
+West Bengal,Murshidabad,Baharampur,Jute,TD-5,21/03/2024,4900,5700,5350
+West Bengal,Nadia,Ranaghat,Pointed Gourd (Parwal),Local,21/03/2024,2800,3900,3400
+West Bengal,Jalpaiguri,Dhupguri,Tomato,Desi,21/03/2024,1400,2150,1800
+West Bengal,Cooch Behar,Cooch Behar,Mustard,Peelee,21/03/2024,5100,5600,5350
+Bihar,Patna,Patna Mandi,Wheat,Lokwan,22/03/2024,2260,2380,2320
+Bihar,Muzaffarpur,Muzaffarpur,Maize,Kharif,22/03/2024,1880,2180,2040
+Bihar,Gaya,Gaya Mandi,Gram (Chana),Desi,22/03/2024,5450,6100,5800
+Bihar,Samastipur,Samastipur,Potato,White,22/03/2024,1080,1460,1270
+Bihar,Begusarai,Begusarai,Mustard,Mustard Seed,22/03/2024,5000,5520,5280
+Bihar,Nalanda,Bihar Sharif,Onion,Nashik,22/03/2024,1450,2050,1780
+Odisha,Cuttack,Cuttack APMC,Rice,Swarna,22/03/2024,2600,3000,2820
+Odisha,Sambalpur,Sambalpur,Paddy,Common,22/03/2024,2183,2225,2203
+Odisha,Ganjam,Berhampur,Black Gram (Urad),Desi,22/03/2024,7200,8400,7850
+Odisha,Balasore,Balasore Mandi,Mustard,Yellow,22/03/2024,5200,5750,5450
+Odisha,Koraput,Jeypore,Ginger,Organic Green,22/03/2024,4500,5800,5200
+Punjab,Moga,Moga APMC,Wheat,PBW 343,23/03/2024,2280,2360,2315
+Punjab,Ferozepur,Ferozepur Cantt,Paddy,Basmati,23/03/2024,3650,4400,4100
+Haryana,Fatehabad,Tohana,Cotton,Medium Staple,23/03/2024,6850,7400,7180
+Haryana,Panipat,Panipat Mandi,Rice,Sugandha,23/03/2024,2900,3500,3250
+Uttar Pradesh,Hapur,Hapur APMC,Wheat,Desi,23/03/2024,2270,2350,2305
+Uttar Pradesh,Meerut,Meerut Mandi,Gur,Raskat,23/03/2024,3300,3750,3520
+Uttar Pradesh,Sambhal,Sambhal Mandi,Mentha Oil,Crude,23/03/2024,88000,99000,94500
+Maharashtra,Dhule,Dhule APMC,Cotton,H-4,24/03/2024,6950,7550,7300
+Maharashtra,Satara,Karad,Turmeric,Rajapuri,24/03/2024,12000,15800,14100
+Maharashtra,Latur,Latur APMC,Soybean,Yellow,24/03/2024,4400,4850,4650
+Maharashtra,Latur,Latur APMC,Red Gram (Tur),White,24/03/2024,9400,10800,10200
+Maharashtra,Akola,Akola Mandi,Cotton,Acala,24/03/2024,7000,7600,7350
+Madhya Pradesh,Vidisha,Vidisha APMC,Wheat,Sharbati Premium,24/03/2024,3100,3800,3500
+Madhya Pradesh,Dewas,Dewas APMC,Soybean,Yellow,24/03/2024,4320,4790,4590
+Madhya Pradesh,Sehore,Sehore Mandi,Gram (Chana),Dollar,24/03/2024,8200,9600,9050
+Madhya Pradesh,Khandwa,Khandwa APMC,Cotton,Bt Cotton,24/03/2024,6900,7500,7240
+Gujarat,Amreli,Savarkundla,Groundnut,G-20,25/03/2024,5900,6850,6420
+Gujarat,Surendranagar,Surendranagar,Cotton,Kalyan,25/03/2024,6800,7450,7180
+Gujarat,Palanpur,Deesa,Potato,Kufri Pukhraj,25/03/2024,1000,1420,1220
+Karnataka,Gadag,Gadag APMC,Chilli Red,Byadgi,25/03/2024,26000,34000,30500
+Karnataka,Haveri,Byadgi APMC,Chilli Red,Kaddi Byadgi,25/03/2024,28000,37500,33200
+Karnataka,Chikkamagaluru,Tarikere,Arecanut,Rashi,25/03/2024,44000,53000,49000
+Tamil Nadu,Tiruppur,Udumalpet,Maize,Hybrid,25/03/2024,2050,2300,2190
+Andhra Pradesh,Prakasam,Ongole APMC,Tobacco,FCV,25/03/2024,19500,24000,22100
+Andhra Pradesh,Kadapa,Proddatur,Turmeric,Duggirala,25/03/2024,11500,15200,13600
+Rajasthan,Baran,Baran Mandi,Garlic,Local,26/03/2024,7800,15000,11800
+Rajasthan,Bundi,Bundi Mandi,Paddy,Basmati 1509,26/03/2024,3400,4100,3800
+Rajasthan,Chittorgarh,Chittorgarh,Soybean,Yellow,26/03/2024,4350,4770,4580
+Rajasthan,Hanumangarh,Hanumangarh Town,Cotton,Desi,26/03/2024,6600,7200,6950
+West Bengal,Nadia,Karimpur,Banana,Singapuri,26/03/2024,1300,1950,1650
+West Bengal,Malda,Malda APMC,Mango,Himsagar (Early),26/03/2024,4500,6800,5700
+West Bengal,Bankura,Kotulpur,Potato,Jyoti,26/03/2024,1120,1490,1320
+Bihar,Purnia,Gulabbagh Mandi,Maize,Yellow Spring,26/03/2024,1920,2240,2110
+Bihar,Katihar,Katihar Mandi,Jute,Tossa,26/03/2024,4800,5600,5250
+Odisha,Bhadrak,Bhadrak APMC,Paddy,Fine,26/03/2024,2203,2300,2250
+Odisha,Kandhamal,Phulbani,Turmeric,Organic Kandhamal,26/03/2024,13500,18200,16100
+Kerala,Thrissur,Thrissur APMC,Banana,Nendran,27/03/2024,3200,4200,3750
+Kerala,Kollam,Kollam Market,Cashewnuts,Raw in Shell,27/03/2024,11500,14000,12800
+Maharashtra,Nanded,Nanded APMC,Soybean,JS-335,27/03/2024,4380,4820,4610
+Maharashtra,Nanded,Nanded APMC,Cotton,Bt Cotton,27/03/2024,7050,7680,7400
+Maharashtra,Yavatmal,Yavatmal APMC,Cotton,Medium,27/03/2024,6900,7500,7260
+Maharashtra,Jalna,Jalna APMC,Sweet Orange (Mosambi),Nagpur,27/03/2024,3800,5600,4700
+Madhya Pradesh,Ratlam,Ratlam APMC,Garlic,Riyawan,27/03/2024,9200,17800,13900
+Madhya Pradesh,Harda,Harda APMC,Wheat,Mill Quality,27/03/2024,2275,2380,2330
+Madhya Pradesh,Shajapur,Shajapur Mandi,Onion,Local Red,27/03/2024,1180,1880,1540
+Gujarat,Navsari,Navsari APMC,Mango,Kesar,27/03/2024,5500,8200,6900
+Gujarat,Anand,Anand APMC,Tobacco,Calcutti,27/03/2024,16000,21000,18800
+Uttar Pradesh,Fatehpur,Fatehpur Mandi,Mustard,Mustard Seed,27/03/2024,5080,5590,5340
+Uttar Pradesh,Mainpuri,Mainpuri,Potato,Red,27/03/2024,1060,1480,1290
+Uttar Pradesh,Sitapur,Sitapur APMC,Rice,Common,27/03/2024,2350,2700,2520
+Punjab,Mansa,Mansa APMC,Cotton,American,28/03/2024,6720,7320,7080
+Haryana,Bhiwani,Bhiwani Mandi,Mustard,Mustard Seed,28/03/2024,5020,5530,5310
+Haryana,Jind,Jind APMC,Wheat,PBW 550,28/03/2024,2280,2370,2325
+Karnataka,Vijayapura,Vijayapura APMC,Grapes,Thompson Seedless,28/03/2024,4200,6800,5600
+Karnataka,Bagalkote,Bagalkote APMC,Pomegranate,Kesar,28/03/2024,6200,12500,9400
+Tamil Nadu,Thiruvannamalai,Polur,Groundnut,TMV-7,28/03/2024,6300,7400,6900
+Tamil Nadu,Vellore,Vellore APMC,Tomato,Desi,28/03/2024,1350,2150,1780
+Andhra Pradesh,West Godavari,Eluru,Paddy,1001,28/03/2024,2203,2280,2240
+Telangana,Adilabad,Adilabad APMC,Cotton,Long Staple,28/03/2024,7100,7720,7460
+Telangana,Suryapet,Suryapet,Rice,HMT,28/03/2024,3100,3700,3420
+Rajasthan,Tonk,Tonk Mandi,Mustard,Bold,28/03/2024,5120,5620,5390
+Rajasthan,Sikar,Sikar APMC,Onion,Local,28/03/2024,1220,1820,1560
+West Bengal,South 24 Parganas,Diamond Harbour,Green Chilli,Local,28/03/2024,3600,5200,4450
+West Bengal,North 24 Parganas,Barasat,Brinjal,Round Purple,28/03/2024,1800,2700,2300
+Kerala,Kannur,Kannur Market,Coconut Oil,Pure,28/03/2024,14200,16500,15400
+Bihar,Rohtas,Sasaram Mandi,Wheat,PBW 343,28/03/2024,2270,2390,2335
+Odisha,Mayurbhanj,Baripada,Mustard,Mustard Seed,28/03/2024,5150,5680,5420

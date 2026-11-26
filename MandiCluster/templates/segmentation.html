@@ -1,0 +1,457 @@
+{% extends 'layout.html' %}
+
+{% block title %}Price Pattern Segmentation - K-Means Clustering{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border:none; padding-bottom: 0; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 0.5rem;">
+      <span>🎯</span> Price Pattern Segmentation
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+      Unsupervised K-Means clustering with Scikit-learn to uncover agricultural market archetypes based on price tiers and intra-mandi volatility.
+    </p>
+  </div>
+</div>
+
+<!-- CLUSTERING CONTROL PANEL -->
+<div class="card" style="border-left: 4px solid var(--primary-main);">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>⚙️</span> K-Means Clustering Parameters & Feature Selection</h3>
+      <p class="card-subtitle">Configure hyperparameters and numerical dimensions for Scikit-learn clustering</p>
+    </div>
+    <span class="badge badge-green">StandardScaler (Z-Score) Active</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+    <!-- K Parameter Slider & Input -->
+    <div>
+      <label class="form-label" for="kClusterSlider" style="display: flex; justify-content: space-between;">
+        <span>Number of Clusters (K):</span>
+        <strong id="kDisplayVal" style="color: var(--primary-dark); font-size: 1.1rem;">4</strong>
+      </label>
+      <input type="range" id="kClusterSlider" min="2" max="7" value="4" step="1" style="width: 100%; accent-color: var(--primary-main); margin-top: 0.5rem;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+        <span>K=2 (Broad)</span>
+        <span>K=4 (Balanced)</span>
+        <span>K=7 (Granular)</span>
+      </div>
+    </div>
+
+    <!-- Feature Selection Checkboxes -->
+    <div>
+      <label class="form-label" style="margin-bottom: 0.5rem;">Select Clustering Feature Vectors:</label>
+      <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" name="clusterFeature" value="Modal_Price" checked>
+          <span><strong>Modal Price</strong> (Trading baseline level in ₹/Q)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" name="clusterFeature" value="Price_Spread" checked>
+          <span><strong>Price Spread</strong> (Intra-market Max - Min dispersion)</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" name="clusterFeature" value="Price_Spread_Pct" checked>
+          <span><strong>Spread Ratio %</strong> (Relative intraday volatility)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Execute Button & Note -->
+    <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 0.5rem;">
+      <button id="btnRunClustering" class="btn btn-green" style="height: 44px; font-size: 1rem;">
+        <span>🚀</span> Train & Run K-Means
+      </button>
+      <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+        Fits <code>sklearn.cluster.KMeans(n_init=15)</code> with true mathematical convergence.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE CLUSTER PERFORMANCE METRICS -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon green">🎯</div>
+    <div class="stat-details">
+      <span class="stat-value" id="dispK">4</span>
+      <span class="stat-label">Active Clusters (K)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon amber">📉</div>
+    <div class="stat-details">
+      <span class="stat-value" id="dispInertia">--</span>
+      <span class="stat-label">Inertia (WCSS)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">✨</div>
+    <div class="stat-details">
+      <span class="stat-value" id="dispSilhouette">--</span>
+      <span class="stat-label">Silhouette Coefficient</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon purple">📊</div>
+    <div class="stat-details">
+      <span class="stat-value" id="dispVariance">--</span>
+      <span class="stat-label">2D PCA Explained Variance</span>
+    </div>
+  </div>
+</div>
+
+<!-- VISUALIZATION SECTION: 2D PCA & DISTRIBUTION -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>🌌</span> 2D PCA Dimensionality Projection</h3>
+        <p class="card-subtitle">Principal Component Analysis mapping multi-feature clusters into 2D space</p>
+      </div>
+      <span class="badge badge-purple" id="pcaBadge">PCA 1 vs PCA 2</span>
+    </div>
+    <div style="position: relative; height: 360px;">
+      <canvas id="pcaScatterChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>📊</span> Market Distribution by Cluster</h3>
+        <p class="card-subtitle">Volume of mandis and commodities assigned per cluster</p>
+      </div>
+    </div>
+    <div style="position: relative; height: 360px;">
+      <canvas id="clusterDistChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLUSTER PROFILES & INTERPRETATION SECTION -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>🏷️</span> Market Cluster Profiles & Domain Interpretation</h3>
+      <p class="card-subtitle">Statistical characterization and agritech intelligence derived from actual cluster means</p>
+    </div>
+    <a href="{{ url_for('performance') }}" class="btn btn-outline btn-sm">
+      <span>📈</span> View Elbow & WCSS Evaluation
+    </a>
+  </div>
+
+  <div class="cluster-grid" id="clusterProfilesContainer">
+    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-muted);">
+      Training K-Means model on agricultural dataset...
+    </div>
+  </div>
+</div>
+
+<!-- CLUSTER ASSIGNMENT RECORDS TABLE -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📋</span> Mandi Cluster Assignments</h3>
+      <p class="card-subtitle">Granular view of records classified by K-Means algorithm</p>
+    </div>
+    <input type="text" id="clusterTableSearch" class="form-control" placeholder="Search in cluster table..." style="max-width: 260px;">
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Assigned Cluster</th>
+          <th>State</th>
+          <th>Market (Mandi)</th>
+          <th>Commodity</th>
+          <th>Variety</th>
+          <th>Modal Price (₹/Q)</th>
+          <th>Price Spread (₹)</th>
+          <th>Volatility %</th>
+        </tr>
+      </thead>
+      <tbody id="clusterTableBody">
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+            Loading assignments...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const CLUSTER_COLORS = [
+  '#15803d', // Green
+  '#0284c7', // Blue
+  '#d97706', // Amber
+  '#7e22ce', // Purple
+  '#e11d48', // Rose
+  '#0d9488', // Teal
+  '#4f46e5'  // Indigo
+];
+
+let pcaScatterChart = null;
+let clusterDistChart = null;
+let currentClusterRecords = [];
+
+const slider = document.getElementById('kClusterSlider');
+const kDisplay = document.getElementById('kDisplayVal');
+
+slider.addEventListener('input', (e) => {
+  kDisplay.textContent = e.target.value;
+});
+
+async function executeClustering() {
+  const k = parseInt(slider.value, 10);
+  const selectedFeatures = Array.from(document.querySelectorAll('input[name="clusterFeature"]:checked'))
+    .map(cb => cb.value);
+
+  if (selectedFeatures.length === 0) {
+    alert("Please select at least one clustering feature.");
+    return;
+  }
+
+  const btn = document.getElementById('btnRunClustering');
+  btn.disabled = true;
+  btn.innerHTML = `<span>⏳</span> Clustering in progress...`;
+
+  try {
+    const res = await fetch('/api/run-clustering', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ n_clusters: k, features: selectedFeatures })
+    });
+
+    const result = await res.json();
+    if (result.error) {
+      alert("Clustering error: " + result.error);
+      return;
+    }
+
+    renderMetrics(result);
+    renderPcaChart(result);
+    renderDistChart(result);
+    renderProfiles(result.cluster_profiles);
+    currentClusterRecords = result.records;
+    renderClusterTable(result.records);
+
+  } catch (err) {
+    console.error("Clustering execution failed:", err);
+    alert("Failed to communicate with clustering engine.");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<span>🚀</span> Train & Run K-Means`;
+  }
+}
+
+function renderMetrics(res) {
+  document.getElementById('dispK').textContent = res.n_clusters;
+  document.getElementById('dispInertia').textContent = Math.round(res.metrics.inertia).toLocaleString();
+  document.getElementById('dispSilhouette').textContent = res.metrics.silhouette_score;
+  const varianceSum = (res.metrics.pca_explained_variance_ratio[0] + res.metrics.pca_explained_variance_ratio[1]).toFixed(1);
+  document.getElementById('dispVariance').textContent = `${varianceSum}% (PC1: ${res.metrics.pca_explained_variance_ratio[0]}%, PC2: ${res.metrics.pca_explained_variance_ratio[1]}%)`;
+}
+
+function renderPcaChart(res) {
+  const ctx = document.getElementById('pcaScatterChart').getContext('2d');
+  if (pcaScatterChart) pcaScatterChart.destroy();
+
+  // Group data points by cluster
+  const datasets = [];
+  for (let c = 0; c < res.n_clusters; c++) {
+    const clusterPoints = res.records
+      .filter(r => r.cluster === c)
+      .map(r => ({
+        x: r.pca_1,
+        y: r.pca_2,
+        meta: r
+      }));
+
+    datasets.push({
+      label: `Cluster ${c}`,
+      data: clusterPoints,
+      backgroundColor: CLUSTER_COLORS[c % CLUSTER_COLORS.length],
+      borderColor: CLUSTER_COLORS[c % CLUSTER_COLORS.length],
+      pointRadius: 6,
+      pointHoverRadius: 9
+    });
+  }
+
+  pcaScatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const m = ctx.raw.meta;
+              return [
+                `Cluster ${m.cluster}: ${m.commodity} (${m.variety})`,
+                `Mandi: ${m.market}, ${m.state}`,
+                `Modal Price: ₹${m.modal_price.toLocaleString()}/Q`,
+                `Spread: ₹${m.price_spread.toLocaleString()} (${m.price_spread_pct}%)`
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: `Principal Component 1 (${res.metrics.pca_explained_variance_ratio[0]}% var)` }
+        },
+        y: {
+          title: { display: true, text: `Principal Component 2 (${res.metrics.pca_explained_variance_ratio[1]}% var)` }
+        }
+      }
+    }
+  });
+}
+
+function renderDistChart(res) {
+  const ctx = document.getElementById('clusterDistChart').getContext('2d');
+  if (clusterDistChart) clusterDistChart.destroy();
+
+  const labels = res.cluster_profiles.map(p => `Cluster ${p.cluster_id}`);
+  const counts = res.cluster_profiles.map(p => p.record_count);
+  const bgColors = res.cluster_profiles.map((p, idx) => CLUSTER_COLORS[idx % CLUSTER_COLORS.length]);
+
+  clusterDistChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Mandis in Cluster',
+        data: counts,
+        backgroundColor: bgColors,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Record Count' }
+        }
+      }
+    }
+  });
+}
+
+function renderProfiles(profiles) {
+  const container = document.getElementById('clusterProfilesContainer');
+  container.innerHTML = profiles.map((p, idx) => {
+    const color = CLUSTER_COLORS[idx % CLUSTER_COLORS.length];
+    const topCrops = Object.entries(p.top_commodities).map(([k, v]) => `${k} (${v})`).join(', ') || 'N/A';
+    const topStates = Object.entries(p.top_states).map(([k, v]) => `${k} (${v})`).join(', ') || 'N/A';
+
+    return `
+      <div class="cluster-card" style="border-top: 4px solid ${color};">
+        <div class="cluster-header">
+          <span class="cluster-id-tag" style="color: ${color};">Cluster ${p.cluster_id}</span>
+          <span class="badge" style="background: ${color}20; color: ${color}; font-weight: 700;">
+            ${p.record_count} Records (${p.percentage}%)
+          </span>
+        </div>
+        <h4 class="cluster-name">${p.segment_tag}</h4>
+        <p class="cluster-desc">${p.segment_description}</p>
+
+        <div class="cluster-metrics-row">
+          <div class="cluster-metric-item">
+            <span class="cluster-metric-val">₹${Math.round(p.avg_modal_price).toLocaleString()}</span>
+            <span class="cluster-metric-lbl">Avg Modal Price</span>
+          </div>
+          <div class="cluster-metric-item">
+            <span class="cluster-metric-val">₹${Math.round(p.avg_spread).toLocaleString()}</span>
+            <span class="cluster-metric-lbl">Avg Price Spread</span>
+          </div>
+          <div class="cluster-metric-item" style="margin-top: 0.5rem;">
+            <span class="cluster-metric-val">${p.avg_spread_pct}%</span>
+            <span class="cluster-metric-lbl">Avg Volatility Spread %</span>
+          </div>
+          <div class="cluster-metric-item" style="margin-top: 0.5rem;">
+            <span class="cluster-metric-val">₹${Math.round(p.min_modal_price).toLocaleString()} - ₹${Math.round(p.max_modal_price).toLocaleString()}</span>
+            <span class="cluster-metric-lbl">Price Range</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.25rem;">
+          <div><strong>Key Commodities:</strong> ${topCrops}</div>
+          <div><strong>Dominant States:</strong> ${topStates}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderClusterTable(records) {
+  const tbody = document.getElementById('clusterTableBody');
+  if (!records || records.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">No records.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = records.map(r => {
+    const color = CLUSTER_COLORS[r.cluster % CLUSTER_COLORS.length];
+    return `
+      <tr>
+        <td>
+          <span class="badge" style="background: ${color}20; color: ${color}; font-weight: 700;">
+            Cluster ${r.cluster}
+          </span>
+        </td>
+        <td>${r.state}</td>
+        <td><strong>${r.market}</strong></td>
+        <td>${r.commodity}</td>
+        <td><span style="color: var(--text-muted);">${r.variety}</span></td>
+        <td style="font-weight: 700;">₹${Math.round(r.modal_price).toLocaleString()}</td>
+        <td>₹${Math.round(r.price_spread).toLocaleString()}</td>
+        <td><span class="badge ${r.price_spread_pct > 25 ? 'badge-amber' : 'badge-blue'}">${r.price_spread_pct}%</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Search filter in cluster records table
+document.getElementById('clusterTableSearch').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) {
+    renderClusterTable(currentClusterRecords);
+    return;
+  }
+  const filtered = currentClusterRecords.filter(r => 
+    r.state.toLowerCase().includes(q) ||
+    r.market.toLowerCase().includes(q) ||
+    r.commodity.toLowerCase().includes(q) ||
+    r.variety.toLowerCase().includes(q) ||
+    String(r.cluster).includes(q)
+  );
+  renderClusterTable(filtered);
+});
+
+document.getElementById('btnRunClustering').addEventListener('click', executeClustering);
+
+// Trigger initial clustering on load
+window.addEventListener('DOMContentLoaded', executeClustering);
+</script>
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends 'layout.html' %}
+
+{% block title %}Model Performance - Clustering Evaluation & Elbow Method{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border:none; padding-bottom: 0; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 0.5rem;">
+      <span>📈</span> Model Performance & Evaluation
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+      Rigorous mathematical assessment of cluster cohesion, separation, and optimal K selection using the Elbow Method and Silhouette Analysis.
+    </p>
+  </div>
+</div>
+
+<!-- KEY MATHEMATICAL METRICS (ACTIVE K=4) -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon amber">📉</div>
+    <div class="stat-details">
+      <span class="stat-value" id="perfInertia">--</span>
+      <span class="stat-label">Inertia / WCSS (Compactness)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon green">✨</div>
+    <div class="stat-details">
+      <span class="stat-value" id="perfSilhouette">--</span>
+      <span class="stat-label">Silhouette Score (-1 to +1)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">📏</div>
+    <div class="stat-details">
+      <span class="stat-value" id="perfDavies">--</span>
+      <span class="stat-label">Davies-Bouldin Index (Lower is Better)</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon purple">🏆</div>
+    <div class="stat-details">
+      <span class="stat-value" id="perfCalinski">--</span>
+      <span class="stat-label">Calinski-Harabasz Index (Higher is Better)</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCIENTIFIC DISCLAIMER CALLOUT -->
+<div class="card" style="border-left: 4px solid var(--accent-amber); background: #fffbeb;">
+  <div style="display: flex; gap: 1rem; align-items: flex-start;">
+    <span style="font-size: 1.75rem;">⚠️</span>
+    <div>
+      <h3 style="font-size: 1.05rem; font-weight: 700; color: #92400e; margin-bottom: 0.35rem;">
+        Academic Rigor Note: Unsupervised Machine Learning Evaluation
+      </h3>
+      <p style="font-size: 0.875rem; color: #78350f; line-height: 1.6;">
+        In Unsupervised Learning (clustering), there are no ground-truth target labels (\(y\)). Therefore, traditional supervised classification metrics such as <strong>"Accuracy %"</strong>, <strong>"Precision"</strong>, or <strong>"Recall"</strong> are mathematically undefined. MandiCluster evaluates clustering quality using genuine intrinsic validation criteria: <em>Inertia (Within-Cluster Sum of Squares)</em>, <em>Silhouette Coefficient</em>, and <em>Domain Validity</em>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ELBOW METHOD & SILHOUETTE CHARTS -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>📉</span> The Elbow Method (WCSS vs K)</h3>
+        <p class="card-subtitle">Identifies inflection point where adding more clusters yields diminishing returns</p>
+      </div>
+      <span class="badge badge-amber" id="recommendedKBadge">Recommended K: Calculating...</span>
+    </div>
+    <div style="position: relative; height: 350px;">
+      <canvas id="elbowCurveChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title"><span>✨</span> Silhouette Analysis Across K</h3>
+        <p class="card-subtitle">Measures how well-separated and cohesive clusters are (-1 to +1)</p>
+      </div>
+    </div>
+    <div style="position: relative; height: 350px;">
+      <canvas id="silhouetteKChart"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- DETAILED EVALUATION EXPLANATIONS -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title"><span>📚</span> Metric Definitions & Interpretation Guide</h3>
+      <p class="card-subtitle">How to interpret clustering performance in an agricultural context</p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 0.5rem;">
+    
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.5rem;">
+        1. Inertia / WCSS
+      </h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+        Sum of squared distances of samples to their closest cluster center:
+        <br>
+        <code style="background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 4px; display: inline-block; margin: 0.35rem 0;">
+          WCSS = &Sigma; &Sigma; ||x - &mu;<sub>k</sub>||<sup>2</sup>
+        </code>
+        <br>
+        Lower WCSS indicates tighter, more homogeneous mandi clusters.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.5rem;">
+        2. Silhouette Coefficient
+      </h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+        Quantifies how well each mandi fits in its cluster versus neighboring clusters:
+        <br>
+        <code style="background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 4px; display: inline-block; margin: 0.35rem 0;">
+          s = (b - a) / max(a, b)
+        </code>
+        <br>
+        A score &gt; 0.50 confirms well-defined and distinct price structures.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.5rem;">
+        3. Davies-Bouldin Index
+      </h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+        Average similarity of each cluster to its most similar cluster. Lower values indicate better separation and less cluster overlap between agricultural markets.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.5rem;">
+        4. Calinski-Harabasz Index
+      </h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+        Also called the Variance Ratio Criterion. Measures the ratio of between-cluster dispersion to within-cluster dispersion. Higher values indicate denser, better-separated clusters.
+      </p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let elbowChart = null;
+let silhouetteChart = null;
+
+async function loadPerformanceData() {
+  try {
+    // 1. Fetch current default clustering (K=4) for primary KPI display
+    const resClust = await fetch('/api/run-clustering', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ n_clusters: 4, features: ['Modal_Price', 'Price_Spread', 'Price_Spread_Pct'] })
+    });
+    const clustData = await resClust.json();
+
+    if (!clustData.error) {
+      document.getElementById('perfInertia').textContent = Math.round(clustData.metrics.inertia).toLocaleString();
+      document.getElementById('perfSilhouette').textContent = clustData.metrics.silhouette_score;
+      document.getElementById('perfDavies').textContent = clustData.metrics.davies_bouldin_index;
+      document.getElementById('perfCalinski').textContent = clustData.metrics.calinski_harabasz_index;
+    }
+
+    // 2. Fetch Elbow Curve Analysis
+    const resElbow = await fetch('/api/elbow-analysis?features=Modal_Price&features=Price_Spread&features=Price_Spread_Pct');
+    const elbowData = await resElbow.json();
+
+    if (!elbowData.error) {
+      document.getElementById('recommendedKBadge').textContent = `Optimal K: ${elbowData.recommended_k} Clusters`;
+      renderElbowChart(elbowData);
+      renderSilhouetteChart(elbowData);
+    }
+  } catch (err) {
+    console.error("Failed to load performance metrics:", err);
+  }
+}
+
+function renderElbowChart(data) {
+  const ctx = document.getElementById('elbowCurveChart').getContext('2d');
+  if (elbowChart) elbowChart.destroy();
+
+  elbowChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.k_values.map(k => `K = ${k}`),
+      datasets: [{
+        label: 'WCSS (Inertia)',
+        data: data.inertias,
+        borderColor: '#d97706',
+        backgroundColor: 'rgba(217, 119, 6, 0.15)',
+        borderWidth: 3,
+        pointBackgroundColor: '#d97706',
+        pointRadius: 6,
+        fill: true,
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `WCSS: ${ctx.raw.toLocaleString()}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          title: { display: true, text: 'Within-Cluster Sum of Squares' }
+        },
+        x: {
+          title: { display: true, text: 'Number of Clusters (K)' }
+        }
+      }
+    }
+  });
+}
+
+function renderSilhouetteChart(data) {
+  const ctx = document.getElementById('silhouetteKChart').getContext('2d');
+  if (silhouetteChart) silhouetteChart.destroy();
+
+  silhouetteChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.k_values.map(k => `K = ${k}`),
+      datasets: [{
+        label: 'Silhouette Score',
+        data: data.silhouettes,
+        backgroundColor: data.k_values.map(k => k === data.recommended_k ? '#15803d' : '#94a3b8'),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Silhouette: ${ctx.raw}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          min: 0,
+          max: 1.0,
+          title: { display: true, text: 'Silhouette Coefficient' }
+        },
+        x: {
+          title: { display: true, text: 'Number of Clusters (K)' }
+        }
+      }
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', loadPerformanceData);
+</script>
+{% endblock %}

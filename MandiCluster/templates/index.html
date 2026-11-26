@@ -1,0 +1,248 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home - Market & Price-Pattern Segmentation{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-card">
+  <div class="hero-content">
+    <div class="hero-pill">
+      <span>🌱</span> AI & Unsupervised ML for Agricultural Intelligence
+    </div>
+    <h1 class="hero-title">MandiCluster</h1>
+    <p class="hero-desc">
+      Discover hidden price dynamics, regional volatility, and trading archetypes across Indian agricultural mandis using Scikit-Learn K-Means Clustering on verified Agmarknet market data.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('segmentation') }}" class="btn btn-primary">
+        <span>🎯</span> Launch Price Segmentation
+      </a>
+      <a href="{{ url_for('analytics') }}" class="btn btn-secondary">
+        <span>📊</span> Explore Market Analytics
+      </a>
+      <a href="{{ url_for('explorer') }}" class="btn btn-secondary">
+        <span>📁</span> Inspect Dataset
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE STATS SUMMARY BAR -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon green">📈</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.total_records }}</span>
+      <span class="stat-label">Market Records Tracked</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon amber">🌾</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.unique_commodities }}</span>
+      <span class="stat-label">Agricultural Commodities</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">🏛️</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.unique_markets }}</span>
+      <span class="stat-label">APMC Mandis Covered</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon purple">🗺️</div>
+    <div class="stat-details">
+      <span class="stat-value">{{ summary.unique_states }}</span>
+      <span class="stat-label">States & UTs Represented</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM & VALUE PROPOSITION -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title"><span>🌾</span> Agricultural Market Price Analysis Overview</h2>
+      <p class="card-subtitle">Addressing information asymmetry and price volatility in fragmented mandi systems</p>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 0.5rem;">
+    <div style="background: var(--primary-tint); border: 1px solid var(--primary-border); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h3 style="color: var(--primary-dark); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">The Challenge: Market Fragmentation</h3>
+      <p style="font-size: 0.9rem; color: var(--text-body); line-height: 1.6;">
+        Across India, over 2,400 principal regulated Agricultural Produce Market Committee (APMC) mandis trade daily. Due to transport barriers, local supply shocks, and intermediary margins, identical crops exhibit high price dispersion and volatile spreads.
+      </p>
+    </div>
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h3 style="color: var(--text-title); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">The MandiCluster Solution</h3>
+      <p style="font-size: 0.9rem; color: var(--text-body); line-height: 1.6;">
+        Instead of examining each mandi in isolation, MandiCluster applies <strong>Unsupervised Machine Learning (K-Means)</strong> to automatically group markets exhibiting cohesive price levels, intraday price spreads, and volatility profiles into interpretable market clusters.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- KEY PROJECT OBJECTIVES -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title"><span>🎯</span> Key Project Objectives</h2>
+      <p class="card-subtitle">Core engineering and analytical goals of the MandiCluster architecture</p>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; margin-top: 0.75rem;">
+    
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff;">
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📥</div>
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.35rem;">1. Data Standardisation</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        Automated ingestion, schema validation, and missing value imputation for authentic Agmarknet daily price records.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff;">
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">📐</div>
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.35rem;">2. Feature Engineering</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        Extracting intra-mandi price spreads (Max - Min) and volatility percentages to capture intraday trading risks.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff;">
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">⚖️</div>
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.35rem;">3. Preprocessing & Scaling</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        StandardScaler z-score normalization ensuring fair cluster distance metrics across commodities ranging from ₹1,200/Q to ₹50,000/Q.
+      </p>
+    </div>
+
+    <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff;">
+      <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🤖</div>
+      <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.35rem;">4. Unsupervised Clustering</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        K-Means++ partition algorithm with Elbow Method and Silhouette Coefficient optimization to segment market price patterns.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- MACHINE LEARNING WORKFLOW PIPELINE -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title"><span>⚡</span> Machine Learning Architecture & Methodology</h2>
+      <p class="card-subtitle">End-to-end data pipeline from raw mandi receipts to actionable agricultural intelligence</p>
+    </div>
+  </div>
+  
+  <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; text-align: center;">
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 1</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">Agmarknet Ingestion</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Arrivals & Min/Max/Modal Prices</div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 2</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">Cleaning & Validation</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Null handling & typo correction</div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 3</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">Feature Engineering</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Price Spread & Volatility %</div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 4</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">StandardScaler Normalization</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Zero mean, unit variance</div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 5</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">K-Means & Elbow</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Inertia WCSS & Silhouette Score</div>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+        <span class="badge badge-green" style="margin-bottom: 0.5rem;">Step 6</span>
+        <div style="font-weight: 700; font-size: 0.9rem; margin-top: 0.25rem;">Cluster Profiling</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Market archetypes & PCA 2D</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVIGATION DIRECTORY CARDS -->
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title"><span>🧭</span> Project Modules & Navigation</h2>
+      <p class="card-subtitle">Access core analytical components of the application</p>
+    </div>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 0.5rem;">
+    
+    <a href="{{ url_for('analytics') }}" style="text-decoration: none; color: inherit;">
+      <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff; height: 100%; transition: var(--transition);" onmouseover="this.style.borderColor='var(--primary-main)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">📊</span>
+          <span class="badge badge-green">Interactive</span>
+        </div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem;">Market Analytics</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Filter by commodity, state, and mandi. Compare minimum, modal, and maximum prices with interactive charts.
+        </p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('segmentation') }}" style="text-decoration: none; color: inherit;">
+      <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff; height: 100%; transition: var(--transition);" onmouseover="this.style.borderColor='var(--primary-main)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">🎯</span>
+          <span class="badge badge-purple">ML Engine</span>
+        </div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem;">Price Pattern Segmentation</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Execute K-Means clustering with selectable K and features. Inspect 2D PCA cluster projections and domain profiles.
+        </p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('performance') }}" style="text-decoration: none; color: inherit;">
+      <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff; height: 100%; transition: var(--transition);" onmouseover="this.style.borderColor='var(--primary-main)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">📈</span>
+          <span class="badge badge-blue">Evaluation</span>
+        </div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem;">Model Performance</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Evaluate WCSS Inertia, Silhouette Score, Davies-Bouldin Index, and view the Elbow Method optimization curve.
+        </p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('explorer') }}" style="text-decoration: none; color: inherit;">
+      <div style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; background: #ffffff; height: 100%; transition: var(--transition);" onmouseover="this.style.borderColor='var(--primary-main)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.5rem;">📁</span>
+          <span class="badge badge-amber">Dataset & Upload</span>
+        </div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem;">Dataset Explorer</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          View records, check null statistics, upload new Agmarknet CSVs, and inspect feature distributions.
+        </p>
+      </div>
+    </a>
+
+  </div>
+</div>
+{% endblock %}

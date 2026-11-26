@@ -1,0 +1,282 @@
+{% extends 'layout.html' %}
+
+{% block title %}About Project - B.Tech CSE Documentation{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border:none; padding-bottom: 0; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 0.5rem;">
+      <span>📖</span> Project Documentation & Academic Details
+    </h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
+      Comprehensive documentation for the B.Tech Computer Science & Engineering Capstone Project: <strong>MandiCluster</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- PROJECT METADATA CARD -->
+<div class="card" style="border-left: 4px solid var(--primary-main);">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+    <div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Project Title</span>
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-dark); margin-top: 0.2rem;">
+        MandiCluster – Market & Price-Pattern Segmentation
+      </h3>
+    </div>
+    <div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Academic Domain</span>
+      <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-top: 0.2rem;">
+        Unsupervised Machine Learning & Agricultural Data Analytics
+      </div>
+    </div>
+    <div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Target Degree</span>
+      <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-top: 0.2rem;">
+        Bachelor of Technology (B.Tech) in CSE
+      </div>
+    </div>
+    <div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Data Source</span>
+      <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-title); margin-top: 0.2rem;">
+        Agmarknet (Ministry of Agriculture & Farmers Welfare, GoI)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM STATEMENT -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>⚠️</span> 1. Problem Statement</h3>
+  </div>
+  <p style="font-size: 0.95rem; color: var(--text-body); line-height: 1.7; margin-bottom: 1rem;">
+    Agricultural marketing in India is characterized by geographical fragmentation across thousands of APMC (Agricultural Produce Market Committee) mandis. Smallholder farmers and agricultural traders face significant challenges due to:
+  </p>
+  <ul style="padding-left: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: var(--text-body); line-height: 1.6;">
+    <li><strong>Information Asymmetry:</strong> Farmers lack visibility into price patterns in neighboring or inter-state mandis, resulting in distress selling at below-market rates.</li>
+    <li><strong>Intra-Market Volatility:</strong> Daily fluctuations between minimum and maximum auction prices (Price Spread) are volatile and poorly documented.</li>
+    <li><strong>Absence of Pattern Intelligence:</strong> Traditional portals display isolated tabular numbers but do not group mandis by cohesive economic behavior, leaving stakeholders without macro-level market segmentation.</li>
+  </ul>
+</div>
+
+<!-- PROJECT OBJECTIVES -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>🎯</span> 2. Project Objectives</h3>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.35rem;">Objective A: Data Pipeline</h4>
+      <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5;">
+        Automate the loading, validation, and standardisation of heterogeneous Agmarknet market arrival and price datasets.
+      </p>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.35rem;">Objective B: Feature Engineering</h4>
+      <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5;">
+        Formulate agricultural market features including absolute Price Spread and percentage volatility ratios to quantify risk.
+      </p>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.35rem;">Objective C: Unsupervised ML</h4>
+      <p style="font-size: 0.875rem; color: var(--primary-dark); margin-bottom: 0.35rem;">
+        Implement Scikit-Learn K-Means clustering with feature standardization and Elbow Method evaluation to isolate market tiers.
+      </p>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <h4 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.35rem;">Objective D: Interactive UI</h4>
+      <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5;">
+        Deliver a clean, responsive, full-stack agritech dashboard with real-time 2D PCA visual projections and custom CSV upload support.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- EXISTING SYSTEM VS PROPOSED SYSTEM -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>⚖️</span> 3. Comparison: Existing System vs MandiCluster</h3>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Evaluation Dimension</th>
+          <th>Existing System (Traditional Agmarknet)</th>
+          <th>Proposed System (MandiCluster)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Analytical Paradigm</strong></td>
+          <td>Static tabular listing of individual mandi prices</td>
+          <td><strong style="color: var(--primary-main);">Unsupervised Machine Learning (K-Means Clustering)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Price Spread Analysis</strong></td>
+          <td>Raw numbers without volatility metrics</td>
+          <td>Automated calculation of <code>Price_Spread</code> and <code>Spread_Pct</code></td>
+        </tr>
+        <tr>
+          <td><strong>Pattern Recognition</strong></td>
+          <td>Manual comparison required by the user</td>
+          <td>Automated segmentation into high-value, volatile, or bulk staples</td>
+        </tr>
+        <tr>
+          <td><strong>Dimensionality Handling</strong></td>
+          <td>None</td>
+          <td>2D Principal Component Analysis (PCA) projection</td>
+        </tr>
+        <tr>
+          <td><strong>Evaluation Framework</strong></td>
+          <td>No validation metrics</td>
+          <td>Elbow Method, Inertia (WCSS), and Silhouette Analysis</td>
+        </tr>
+        <tr>
+          <td><strong>Custom Data Ingestion</strong></td>
+          <td>Locked to official legacy web portal</td>
+          <td>Dynamic CSV upload with schema validation and sanitization</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>🔄</span> 4. System Methodology & Pipeline</h3>
+  </div>
+  
+  <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem; line-height: 1.6;">
+    <div style="border-left: 3px solid var(--primary-main); padding-left: 1rem;">
+      <strong>Phase 1 – Data Ingestion & Sanitization:</strong>
+      <p style="color: var(--text-muted); margin-top: 0.2rem;">
+        Agmarknet CSV data is parsed, case-insensitive column variations are mapped to standard schemas, currency symbols/commas stripped, and missing prices imputed logically.
+      </p>
+    </div>
+
+    <div style="border-left: 3px solid var(--primary-main); padding-left: 1rem;">
+      <strong>Phase 2 – Agricultural Feature Engineering:</strong>
+      <p style="color: var(--text-muted); margin-top: 0.2rem;">
+        Calculates <code>Price_Spread = Max_Price - Min_Price</code> to measure intra-day price dispersion, and <code>Price_Spread_Pct = (Price_Spread / Modal_Price) * 100</code> to capture relative price volatility.
+      </p>
+    </div>
+
+    <div style="border-left: 3px solid var(--primary-main); padding-left: 1rem;">
+      <strong>Phase 3 – Feature Normalization:</strong>
+      <p style="color: var(--text-muted); margin-top: 0.2rem;">
+        Applies <code>StandardScaler</code> to center each feature at zero mean and unit standard deviation, ensuring Euclidean distance in K-Means is not dominated by high-nominal commodities.
+      </p>
+    </div>
+
+    <div style="border-left: 3px solid var(--primary-main); padding-left: 1rem;">
+      <strong>Phase 4 – Model Training & Hyperparameter Tuning:</strong>
+      <p style="color: var(--text-muted); margin-top: 0.2rem;">
+        Executes K-Means++ clustering across \(K \in [2, 7]\). Computes Within-Cluster Sum of Squares (WCSS) and Silhouette Coefficients to find the mathematical inflection point (Elbow Method).
+      </p>
+    </div>
+
+    <div style="border-left: 3px solid var(--primary-main); padding-left: 1rem;">
+      <strong>Phase 5 – Cluster Profiling & Agritech Insights:</strong>
+      <p style="color: var(--text-muted); margin-top: 0.2rem;">
+        Aggregates cluster centroids, computes dominant crops and states, translates mathematical clusters into real-world market archetypes, and renders interactive Chart.js visualizations.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- TECHNOLOGIES USED -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>💻</span> 5. Technology Stack</h3>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+      <div style="font-weight: 700; color: var(--primary-dark);">Backend Framework</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Python Flask 3.x (Modular MVC architecture, RESTful API endpoints)</div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+      <div style="font-weight: 700; color: var(--primary-dark);">Machine Learning</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Scikit-learn (KMeans, StandardScaler, PCA, Silhouette Score)</div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+      <div style="font-weight: 700; color: var(--primary-dark);">Data Engineering</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Pandas & NumPy (Vectorized cleaning, aggregation, summary statistics)</div>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem;">
+      <div style="font-weight: 700; color: var(--primary-dark);">Frontend & UI</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">HTML5, Modern CSS3, JavaScript (Fetch API, Chart.js 4.x)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADVANTAGES & LIMITATIONS -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+  
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <h3 class="card-title"><span>🌟</span> Advantages & Real-World Impact</h3>
+    </div>
+    <ul style="padding-left: 1.25rem; font-size: 0.875rem; color: var(--text-body); line-height: 1.6; display: flex; flex-direction: column; gap: 0.5rem;">
+      <li><strong>Empowering Farmers:</strong> Enables identification of high-value mandi clusters within transport distance to maximize crop realization.</li>
+      <li><strong>Trader Arbitrage:</strong> Detects regional price spreads between surplus and deficit mandi clusters.</li>
+      <li><strong>Policy Buffer Stocks:</strong> Informs government agencies (FCI, NAFED) on price stability across clustered regions.</li>
+      <li><strong>Zero Fabrication:</strong> All metrics, clusters, and elbow evaluations are calculated directly on genuine market data.</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom: 0;">
+    <div class="card-header">
+      <h3 class="card-title"><span>🔭</span> Limitations & Future Scope</h3>
+    </div>
+    <ul style="padding-left: 1.25rem; font-size: 0.875rem; color: var(--text-body); line-height: 1.6; display: flex; flex-direction: column; gap: 0.5rem;">
+      <li><strong>Cross-Sectional vs Temporal:</strong> Current model clusters daily snapshots. Future work can incorporate time-series clustering (Dynamic Time Warping).</li>
+      <li><strong>Exogenous Variables:</strong> Integrating weather patterns, rainfall deficit indices, and diesel freight tariffs.</li>
+      <li><strong>Deep Learning Forecasting:</strong> Extending the clustering pipeline with LSTM / Prophet models for 30-day forward price forecasts.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- PROJECT TEAM DETAILS (B.TECH PLACEHOLDER) -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><span>👥</span> Academic Project Team & Credits</h3>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <span class="badge badge-green" style="margin-bottom: 0.5rem;">Student / Candidate</span>
+      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title);">B.Tech CSE Project Student</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Department of Computer Science & Engineering
+      </p>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <span class="badge badge-blue" style="margin-bottom: 0.5rem;">Project Domain</span>
+      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title);">Machine Learning & Agritech</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Unsupervised Clustering & Agricultural Intelligence
+      </p>
+    </div>
+
+    <div style="background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
+      <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Data Attribution</span>
+      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-title);">Agmarknet Open Data</h4>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Ministry of Agriculture & Farmers Welfare, Government of India
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

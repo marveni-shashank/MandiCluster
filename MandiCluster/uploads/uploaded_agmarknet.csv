@@ -1,0 +1,7 @@
+State,District,Market,Commodity,Variety,Arrival_Date,Min_Price,Max_Price,Modal_Price
+Punjab,Ludhiana,Khanna,Wheat,HD-2967,15/03/2024,2250,2350,2300
+Haryana,Karnal,Karnal,Rice,Basmati,15/03/2024,3500,4200,3850
+Maharashtra,Nashik,Lasalgaon,Onion,Red,15/03/2024,1200,1800,1500
+Gujarat,Rajkot,Gondal,Groundnut,Local,15/03/2024,5500,6500,6000
+Karnataka,Kolar,Kolar,Tomato,Hybrid,15/03/2024,1100,1700,1400
+Rajasthan,Kota,Kota,Soybean,Yellow,15/03/2024,4200,4700,4500
